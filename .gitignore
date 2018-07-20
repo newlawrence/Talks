@@ -3,3 +3,6 @@
 .AppleDouble
 .LSOverride
 ._*
+
+# Jupyter
+.ipynb_checkpoints/
