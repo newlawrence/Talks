@@ -11961,7 +11961,337 @@ a.anchor-link {
 
 </div>
 </div>
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Uso-b&#225;sico-de-la-biblioteca">Uso b&#225;sico de la biblioteca<a class="anchor-link" href="#Uso-b&#225;sico-de-la-biblioteca">&#182;</a></h1>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="cp">#pragma cling add_include_path(&quot;calculate2.1.1rc5&quot;)</span>
+<span class="cp">#include</span> <span class="cpf">&quot;calculate.hpp&quot;</span><span class="cp"></span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Instanciar-un-parser">Instanciar un parser<a class="anchor-link" href="#Instanciar-un-parser">&#182;</a></h2>
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="k">auto</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">calculate</span><span class="o">::</span><span class="n">Parser</span><span class="p">{};</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Crear-expresiones-atendiendo-a-su-notaci&#243;n">Crear expresiones atendiendo a su notaci&#243;n<a class="anchor-link" href="#Crear-expresiones-atendiendo-a-su-notaci&#243;n">&#182;</a></h2>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Calculate</strong> permite parsear expresiones escritas tanto en notación infija como posfija:</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="kt">double</span> <span class="n">result</span><span class="p">;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="k">auto</span> <span class="n">e1</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">from_infix</span><span class="p">(</span><span class="s">&quot;1+2*3&quot;</span><span class="p">);</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">e1</span><span class="p">;</span>
+<span class="n">result</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>7</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="k">auto</span> <span class="n">e2</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">from_postfix</span><span class="p">(</span><span class="s">&quot;1 2 3 * +&quot;</span><span class="p">);</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">e2</span><span class="p">;</span>
+<span class="n">result</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>7</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Crear-expresiones-con-variables">Crear expresiones con variables<a class="anchor-link" href="#Crear-expresiones-con-variables">&#182;</a></h2>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Aquellos símbolos que no se encuentren cargados en un parser harán saltar una excepción:</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="k">try</span> <span class="p">{</span>
+    <span class="n">parser</span><span class="p">.</span><span class="n">from_infix</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">calculate</span><span class="o">::</span><span class="n">BaseError</span><span class="o">&amp;</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">error</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Undefined symbol: &#39;x&#39;
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Es posible especificar qué símbolos se han de tratar como variables al momento de construir un objeto expresión. Las expresiones se evalúan como si de funciones regulares se tratase.</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="k">auto</span> <span class="n">e3</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">from_infix</span><span class="p">(</span><span class="s">&quot;x+y&quot;</span><span class="p">,</span> <span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="s">&quot;y&quot;</span><span class="p">);</span>
+<span class="n">e3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    <span class="c1">// x == 1, y == 2</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[8]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>3</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="k">auto</span> <span class="n">e4</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">from_postfix</span><span class="p">(</span><span class="s">&quot;x y +&quot;</span><span class="p">,</span> <span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="s">&quot;y&quot;</span><span class="p">);</span>
+<span class="n">e4</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    <span class="c1">// x == 1, y == 2</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>3</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Los objetos de la clase <strong>Parser</strong> proveen además de un método adicional <strong>parse</strong> que va añadiendo a la lista de variables aquellos símbolos que no están previamente cargados en el parser según van apareciendo en la expresión:</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="k">auto</span> <span class="n">e5</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="s">&quot;a-b&quot;</span><span class="p">);</span>
+<span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="nl">variable</span> <span class="p">:</span> <span class="n">e5</span><span class="p">.</span><span class="n">variables</span><span class="p">())</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">variable</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">e5</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    <span class="c1">// a == 1, b == 2</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>a
+b
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>-1</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div></section></section>
 </div>
 </div>
 
