@@ -6,3 +6,4 @@
 copying linguist-vendored
 *.md linguist-vendored
 *.yml linguist-vendored
+*.hpp linguist-vendored
