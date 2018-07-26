@@ -12306,6 +12306,17 @@ a.anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
+<li>Posee un tipo objetivo <strong>Parser::Type</strong> (<strong>double</strong> por defecto).</li>
+</ul>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
 <li>Provee de los métodos para crear expresiones.</li>
 </ul>
 
@@ -13075,6 +13086,531 @@ a.anchor-link {
 
 <div class="output_text output_subarea output_execute_result">
 <pre>true</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="El-analizador-l&#233;xico">El analizador l&#233;xico<a class="anchor-link" href="#El-analizador-l&#233;xico">&#182;</a></h1>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>La clase <strong>Lexer</strong> contiene el conjunto de reglas que se utilizan para separar y clasificar los elementos que conforman la expresión:</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="k">auto</span><span class="o">&amp;</span> <span class="n">lexer</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">lexer</span><span class="p">();</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="nl">t</span> <span class="p">:</span> <span class="n">lexer</span><span class="p">.</span><span class="n">tokenize_infix</span><span class="p">(</span><span class="s">&quot;1+sin(2*pi*x)&quot;</span><span class="p">))</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">t</span><span class="p">.</span><span class="n">token</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;   &quot;</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1   +   sin   (   2   *   pi   *   x   )   
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A su vez, el <strong>lexer</strong> tiene definidas las funciones para convertir del tipo objetvo del <strong>parser</strong> a cadena:</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="n">lexer</span><span class="p">.</span><span class="n">to_string</span><span class="p">(</span><span class="mf">1.234</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[33]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#34;1.234&#34;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Y viceversa:</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="n">lexer</span><span class="p">.</span><span class="n">to_value</span><span class="p">(</span><span class="s">&quot;1.234&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[34]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>1.234</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Expresiones-regulares">Expresiones regulares<a class="anchor-link" href="#Expresiones-regulares">&#182;</a></h2>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>El <strong>lexer</strong> se sirve de expresiones regulares para determinar qué debe ser tratado como un número, qué como el nombre de una constante o función, y qué como un operador:</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="n">lexer</span><span class="p">.</span><span class="n">number</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[35]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#34;^[+\-]?(?:(?:NaN|Inf)|(?:(?:\d+\.?\d*|\.\d+)(?:[eE][+\-]?\d+)?))$&#34;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="n">lexer</span><span class="p">.</span><span class="n">name</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[36]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#34;^[A-Za-z_]+[A-Za-z_\d]*$&#34;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="n">lexer</span><span class="p">.</span><span class="n">sign</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[37]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#34;^(?:[^A-Za-z\d.(),_\s]|(?:\.(?!\d)))+$&#34;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="https://regex101.com/r/r38Q75/1">Ejemplo interactivo</a>.</p>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Calculate</strong> permite crear parsers especificando otros conjuntos de expresiones regulares:</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="k">auto</span> <span class="n">l1</span> <span class="o">=</span> <span class="n">calculate</span><span class="o">::</span><span class="n">lexer_from_regexes</span><span class="o">&lt;</span><span class="n">calculate</span><span class="o">::</span><span class="n">Parser</span><span class="o">::</span><span class="n">Type</span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="n">calculate</span><span class="o">::</span><span class="n">defaults</span><span class="o">::</span><span class="n">number</span><span class="o">&lt;</span><span class="n">calculate</span><span class="o">::</span><span class="n">Parser</span><span class="o">::</span><span class="n">Type</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="n">calculate</span><span class="o">::</span><span class="n">defaults</span><span class="o">::</span><span class="n">name</span><span class="p">,</span>
+    <span class="sa">R</span><span class="s">&quot;</span><span class="dl">(</span><span class="s">^(?:[^A-Za-z\d.(),_\s]|(?:\.(?!\d)))$</span><span class="dl">)</span><span class="s">&quot;</span>
+<span class="p">);</span>
+<span class="k">auto</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">calculate</span><span class="o">::</span><span class="n">Parser</span><span class="p">{</span><span class="n">l1</span><span class="p">};</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>En el ejemplo, se ha modificado la lógica que dictamina qué es un operador. El <strong>parser</strong> por defecto tiende a unir todos los símbolos no alfanuméricos que encuentra al estilo de <strong>Haskell</strong>, por lo que la siguiente prueba no sería posible saltando una excepción indicando que el operador <strong>*-</strong> no está definido:</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="n">p1</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="s">&quot;2*-1&quot;</span><span class="p">).</span><span class="n">infix</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[39]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#34;2*(-1)&#34;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="S&#237;mbolos-propios-de-la-notaci&#243;n-posfija">S&#237;mbolos propios de la notaci&#243;n posfija<a class="anchor-link" href="#S&#237;mbolos-propios-de-la-notaci&#243;n-posfija">&#182;</a></h2>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>La notación posfija requiere de dos elementos que modifiquen la prioridad de las operaciones (los paréntesis):</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="n">lexer</span><span class="p">.</span><span class="n">left</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[40]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#34;(&#34;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="n">lexer</span><span class="p">.</span><span class="n">right</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[41]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#34;)&#34;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A su vez, también necesita de un símbolo adicional para separar los argumentos de las funciones (la coma):</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="n">lexer</span><span class="p">.</span><span class="n">separator</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[42]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#34;,&#34;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Calculate</strong> permite modificar también todos estos elementos para adaptarlos a las necesidades del usuario:</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="k">auto</span> <span class="n">l2</span> <span class="o">=</span> <span class="n">calculate</span><span class="o">::</span><span class="n">Lexer</span><span class="o">&lt;</span><span class="n">calculate</span><span class="o">::</span><span class="n">Parser</span><span class="o">::</span><span class="n">Type</span><span class="o">&gt;</span><span class="p">{</span>
+    <span class="n">calculate</span><span class="o">::</span><span class="n">defaults</span><span class="o">::</span><span class="n">number</span><span class="o">&lt;</span><span class="n">calculate</span><span class="o">::</span><span class="n">Parser</span><span class="o">::</span><span class="n">Type</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="n">calculate</span><span class="o">::</span><span class="n">defaults</span><span class="o">::</span><span class="n">name</span><span class="p">,</span>
+    <span class="sa">R</span><span class="s">&quot;</span><span class="dl">(</span><span class="s">^(?:[^A-Za-z\d.\[\];_\s]|(?:\.(?!\d)))+$</span><span class="dl">)</span><span class="s">&quot;</span><span class="p">,</span>
+    <span class="s">&quot;[&quot;</span><span class="p">,</span> <span class="s">&quot;]&quot;</span><span class="p">,</span> <span class="s">&quot;;&quot;</span>  <span class="c1">// Símbolos deseados</span>
+<span class="p">};</span>
+<span class="k">auto</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">calculate</span><span class="o">::</span><span class="n">Parser</span><span class="p">{</span><span class="n">l2</span><span class="p">};</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>En el ejemplo, se ha modificado la expresión regular que determina qué es un símbolo para que excluya a los nuevos símbolos de prioridad (ahora corchetes) y al nuevo separador (ahora el punto y coma):</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="n">p2</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="s">&quot;pow[a;b]&quot;</span><span class="p">)(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[44]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>8</pre>
 </div>
 
 </div>
