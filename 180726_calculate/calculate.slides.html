@@ -12116,7 +12116,7 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Aquellos símbolos que no se encuentren cargados en un parser harán saltar una excepción:</p>
+<p>Aquellos símbolos que no se encuentren cargados en un párser harán saltar una excepción:</p>
 
 </div>
 </div>
@@ -12390,7 +12390,7 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Para generar expresiones precalculando aquellas ramas constantes se modifica el atributo optimize del objeto <strong>parser</strong>:</p>
+<p>Para generar expresiones precalculando aquellas ramas constantes se modifica el atributo <strong>optimize</strong> del objeto <strong>parser</strong>:</p>
 
 </div>
 </div>
@@ -12721,7 +12721,7 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><em>Existe un cuarto tipo, las <strong>Variables</strong>, pero estas pertenecen al funcionamiento interno del parser y sólo existen para proporcionar la habilidad a las expresiones de funcionar como invocables. A efectos prácticos, funcionan como las constantes.</em></p>
+<p><em>Existe un cuarto tipo, las <strong>Variables</strong>, pero estas pertenecen al funcionamiento interno del párser y sólo existen para proporcionar la habilidad a las expresiones de funcionar como invocables. A efectos prácticos, funcionan como las constantes.</em></p>
 
 </div>
 </div>
@@ -12738,7 +12738,7 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Envuelven valores del tipo al que esté orientado el parser (<strong>double</strong> en el caso del parser por defecto).</p>
+<p>Envuelven valores del tipo al que esté orientado el párser (<strong>double</strong> en el caso del parser por defecto).</p>
 
 </div>
 </div>
@@ -12789,7 +12789,7 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Son capaces de envolver cualquier tipo de invocable, siempre que todos sus argumentos (un número indefinido de ellos) y el resultado sean del tipo al que está orientado el parser:</p>
+<p>Son capaces de envolver cualquier tipo de invocable, siempre que todos sus argumentos (un número indefinido de ellos) y el resultado sean del tipo al que está orientado el párser:</p>
 
 </div>
 </div>
@@ -13150,7 +13150,7 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>A su vez, el <strong>lexer</strong> tiene definidas las funciones para convertir del tipo objetvo del <strong>parser</strong> a cadena:</p>
+<p>A su vez, el analizador léxico tiene definidas las funciones para convertir del tipo objetivo del párser a cadena:</p>
 
 </div>
 </div>
@@ -13242,7 +13242,7 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>El <strong>lexer</strong> se sirve de expresiones regulares para determinar qué debe ser tratado como un número, qué como el nombre de una constante o función, y qué como un operador:</p>
+<p>El analizador léxico se sirve de expresiones regulares para determinar qué debe ser tratado como un número, qué como el nombre de una constante o función, y qué como un operador:</p>
 
 </div>
 </div>
@@ -13386,7 +13386,7 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>En el ejemplo, se ha modificado la lógica que dictamina qué es un operador. El <strong>parser</strong> por defecto tiende a unir todos los símbolos no alfanuméricos que encuentra al estilo de <strong>Haskell</strong>, por lo que la siguiente prueba no sería posible saltando una excepción indicando que el operador <strong>*-</strong> no está definido:</p>
+<p>En el ejemplo, se ha modificado la lógica que dictamina qué es un operador. El párser por defecto tiende a unir todos los símbolos no alfanuméricos que encuentra al estilo de <strong>Haskell</strong>, por lo que la siguiente prueba no sería posible saltando una excepción indicando que el operador <strong>*-</strong> no está definido:</p>
 
 </div>
 </div>
@@ -13737,7 +13737,7 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Las ramas de una expresión son a su vez objetos expresión:</p>
+<p>Las ramas de una expresión son objetos expresión:</p>
 
 </div>
 </div>
@@ -14063,6 +14063,199 @@ a.anchor-link {
 </div>
 </div>
 
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Extendiendo-Calculate">Extendiendo Calculate<a class="anchor-link" href="#Extendiendo-Calculate">&#182;</a></h1>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Calculate</strong> no es sólo una biblioteca orientada al parseo de expresiones matemáticas al uso; también aporta la capacidad de crear pársers personalizados basados en las notaciones <strong>infija</strong> y <strong>posfija</strong> y el algortimo de <a href="https://es.wikipedia.org/wiki/Algoritmo_shunting_yard">Shunting Yard</a> para convertir de la una en la otra.</p>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Parser-de-n&#250;meros-complejos">Parser de n&#250;meros complejos<a class="anchor-link" href="#Parser-de-n&#250;meros-complejos">&#182;</a></h2>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Calculate</strong> provee por defecto de un párser de expresiones cuyo tipo de dato objetivo son los números complejos cuyo funcionamiento es idéntico al, hasta ahora, expuesto párser orientado a números reales.</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[57]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="k">auto</span> <span class="n">complex_parser</span> <span class="o">=</span> <span class="n">calculate</span><span class="o">::</span><span class="n">ComplexParser</span><span class="p">{};</span>
+
+<span class="c1">// Identidad de Euler</span>
+<span class="n">std</span><span class="o">::</span><span class="n">real</span><span class="p">(</span><span class="n">complex_parser</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="s">&quot;exp(-1i * pi) + 1&quot;</span><span class="p">)())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[57]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Creaci&#243;n-de-un-p&#225;rser-de-n&#250;meros-enteros">Creaci&#243;n de un p&#225;rser de n&#250;meros enteros<a class="anchor-link" href="#Creaci&#243;n-de-un-p&#225;rser-de-n&#250;meros-enteros">&#182;</a></h2>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Calculate</strong> no dispone por defecto de un párser de números enteros, pero crear uno es muy sencillo. Sólo hay que heredar de la clase plantilla <strong>BaseParser</strong> y proveer en el constructor todas aquellas constantes, funciones y operadores que se desee vengan precargados.</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="k">namespace</span> <span class="n">calculate</span> <span class="p">{</span>
+    
+<span class="k">class</span> <span class="nc">IntegerParser</span> <span class="o">:</span> <span class="k">public</span> <span class="n">BaseParser</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">IntegerParser</span><span class="p">()</span> <span class="o">:</span> <span class="n">BaseParser</span><span class="o">&lt;</span><span class="n">Type</span><span class="o">&gt;</span><span class="p">{</span><span class="n">lexer_from_defaults</span><span class="o">&lt;</span><span class="n">Type</span><span class="o">&gt;</span><span class="p">()}</span> <span class="p">{</span>
+        <span class="k">using</span> <span class="k">namespace</span> <span class="n">defaults</span><span class="p">;</span>
+
+        <span class="n">operators</span><span class="p">.</span><span class="n">insert</span><span class="p">({</span>
+            <span class="p">{</span><span class="s">&quot;+&quot;</span><span class="p">,</span> <span class="p">{</span><span class="n">add</span><span class="o">&lt;</span><span class="n">Type</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">Precedence</span><span class="o">::</span><span class="n">low</span><span class="p">,</span> <span class="n">Associativity</span><span class="o">::</span><span class="n">FULL</span><span class="p">}},</span>
+            <span class="p">{</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="p">{</span><span class="n">sub</span><span class="o">&lt;</span><span class="n">Type</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">Precedence</span><span class="o">::</span><span class="n">low</span><span class="p">,</span> <span class="n">Associativity</span><span class="o">::</span><span class="n">LEFT</span><span class="p">}},</span>
+            <span class="p">{</span><span class="s">&quot;*&quot;</span><span class="p">,</span> <span class="p">{</span><span class="n">mul</span><span class="o">&lt;</span><span class="n">Type</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">Precedence</span><span class="o">::</span><span class="n">normal</span><span class="p">,</span> <span class="n">Associativity</span><span class="o">::</span><span class="n">FULL</span><span class="p">}},</span>
+            <span class="p">{</span><span class="s">&quot;/&quot;</span><span class="p">,</span> <span class="p">{</span><span class="n">div</span><span class="o">&lt;</span><span class="n">Type</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">Precedence</span><span class="o">::</span><span class="n">normal</span><span class="p">,</span> <span class="n">Associativity</span><span class="o">::</span><span class="n">LEFT</span><span class="p">}},</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[59]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="k">auto</span> <span class="n">integer_parser</span> <span class="o">=</span> <span class="n">calculate</span><span class="o">::</span><span class="n">IntegerParser</span><span class="p">{};</span>
+<span class="kt">int</span><span class="p">{</span><span class="n">integer_parser</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="s">&quot;1 + 2 * 3&quot;</span><span class="p">)}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[59]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>7</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#161;Atenci&#243;n!">&#161;Atenci&#243;n!<a class="anchor-link" href="#&#161;Atenci&#243;n!">&#182;</a></h3>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>El procedimiento para crear pársers cuyo tipo de dato objetivo <strong>no sea numérico</strong> requiere de implementar a su vez un analizador léxico para dicho tipo dato.</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="https://wandbox.org/permlink/GsI6ZenLXJW5xpXl">Prueba de concepto</a> de la creación de un párser cuyo tipo de dato objetivo son cadenas.</p>
+
+</div>
+</div>
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="&#161;Eso-es-todo!">&#161;Eso es todo!<a class="anchor-link" href="#&#161;Eso-es-todo!">&#182;</a></h1>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><em>The most dangerous phrase in the language is "we've always done it this way." -</em> <strong><em>Rear admiral Grace Murray Hopper</em></strong></p>
+
+</div>
+</div>
 </div></div></section></section>
 </div>
 </div>
