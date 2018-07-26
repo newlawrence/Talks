@@ -12868,10 +12868,30 @@ a.anchor-link {
 <div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="p">{</span> <span class="n">parser</span><span class="p">.</span><span class="n">constants</span><span class="p">.</span><span class="n">insert</span><span class="p">({</span><span class="s">&quot;G&quot;</span><span class="p">,</span> <span class="p">{</span><span class="mf">6.674e-11</span><span class="p">}});</span> <span class="p">}</span>   <span class="c1">// Gravitación universal</span>
+<div class=" highlight hl-c++"><pre><span></span><span class="n">parser</span><span class="p">.</span><span class="n">constants</span><span class="p">.</span><span class="n">insert</span><span class="p">({</span><span class="s">&quot;G&quot;</span><span class="p">,</span> <span class="p">{</span><span class="mf">6.674e-11</span><span class="p">}});</span>   <span class="c1">// Gravitación universal</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[21]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>@0x7fc8b8410e70</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -14400,12 +14420,10 @@ a.anchor-link {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="k">namespace</span> <span class="n">calculate</span> <span class="p">{</span>
-    
 <span class="k">class</span> <span class="nc">IntegerParser</span> <span class="o">:</span> <span class="k">public</span> <span class="n">BaseParser</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
     <span class="n">IntegerParser</span><span class="p">()</span> <span class="o">:</span> <span class="n">BaseParser</span><span class="o">&lt;</span><span class="n">Type</span><span class="o">&gt;</span><span class="p">{</span><span class="n">lexer_from_defaults</span><span class="o">&lt;</span><span class="n">Type</span><span class="o">&gt;</span><span class="p">()}</span> <span class="p">{</span>
         <span class="k">using</span> <span class="k">namespace</span> <span class="n">defaults</span><span class="p">;</span>
-
         <span class="n">operators</span><span class="p">.</span><span class="n">insert</span><span class="p">({</span>
             <span class="p">{</span><span class="s">&quot;+&quot;</span><span class="p">,</span> <span class="p">{</span><span class="n">add</span><span class="o">&lt;</span><span class="n">Type</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">Precedence</span><span class="o">::</span><span class="n">low</span><span class="p">,</span> <span class="n">Associativity</span><span class="o">::</span><span class="n">FULL</span><span class="p">}},</span>
             <span class="p">{</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="p">{</span><span class="n">sub</span><span class="o">&lt;</span><span class="n">Type</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">Precedence</span><span class="o">::</span><span class="n">low</span><span class="p">,</span> <span class="n">Associativity</span><span class="o">::</span><span class="n">LEFT</span><span class="p">}},</span>
@@ -14414,7 +14432,6 @@ a.anchor-link {
         <span class="p">});</span>
     <span class="p">}</span>
 <span class="p">};</span>
-
 <span class="p">}</span>
 </pre></div>
 
