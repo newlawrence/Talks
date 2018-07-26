@@ -12172,7 +12172,7 @@ a.anchor-link {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="k">auto</span> <span class="n">e3</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">from_infix</span><span class="p">(</span><span class="s">&quot;x+y&quot;</span><span class="p">,</span> <span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="s">&quot;y&quot;</span><span class="p">);</span>
-<span class="n">e3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    <span class="c1">// x == 1, y == 2</span>
+<span class="n">e3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1">// x == 1, y == 2</span>
 </pre></div>
 
 </div>
@@ -12206,7 +12206,7 @@ a.anchor-link {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="k">auto</span> <span class="n">e4</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">from_postfix</span><span class="p">(</span><span class="s">&quot;x y +&quot;</span><span class="p">,</span> <span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="s">&quot;y&quot;</span><span class="p">);</span>
-<span class="n">e4</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    <span class="c1">// x == 1, y == 2</span>
+<span class="n">e4</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1">// x == 1, y == 2</span>
 </pre></div>
 
 </div>
@@ -12254,7 +12254,7 @@ a.anchor-link {
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">variable</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span><span class="p">;</span>
 <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
-<span class="n">e5</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    <span class="c1">// a == 1, b == 2</span>
+<span class="n">e5</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1">// a == 1, b == 2</span>
 </pre></div>
 
 </div>
@@ -12490,7 +12490,7 @@ a.anchor-link {
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="k">auto</span><span class="o">&amp;</span> <span class="n">constants</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">constants</span><span class="p">;</span>  <span class="c1">// Constantes</span>
+<div class=" highlight hl-c++"><pre><span></span><span class="p">{</span> <span class="n">parser</span><span class="p">.</span><span class="n">constants</span><span class="p">;</span> <span class="p">}</span>  <span class="c1">// Constantes</span>
 </pre></div>
 
 </div>
@@ -12503,7 +12503,7 @@ a.anchor-link {
 <div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="k">auto</span><span class="o">&amp;</span> <span class="n">functions</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">functions</span><span class="p">;</span>  <span class="c1">// Funciones</span>
+<div class=" highlight hl-c++"><pre><span></span><span class="p">{</span> <span class="n">parser</span><span class="p">.</span><span class="n">functions</span><span class="p">;</span> <span class="p">}</span>  <span class="c1">// Funciones</span>
 </pre></div>
 
 </div>
@@ -12516,7 +12516,7 @@ a.anchor-link {
 <div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="k">auto</span><span class="o">&amp;</span> <span class="n">operators</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">operators</span><span class="p">;</span>  <span class="c1">// Operadores</span>
+<div class=" highlight hl-c++"><pre><span></span><span class="p">{</span> <span class="n">parser</span><span class="p">.</span><span class="n">operators</span><span class="p">;</span> <span class="p">}</span>  <span class="c1">// Operadores</span>
 </pre></div>
 
 </div>
@@ -12614,30 +12614,10 @@ a.anchor-link {
 <div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">parser</span><span class="p">.</span><span class="n">constants</span><span class="p">.</span><span class="n">insert</span><span class="p">({</span><span class="s">&quot;G&quot;</span><span class="p">,</span> <span class="p">{</span><span class="mf">6.674e-11</span><span class="p">}});</span>  <span class="c1">// Gravitación universal</span>
+<div class=" highlight hl-c++"><pre><span></span><span class="p">{</span> <span class="n">parser</span><span class="p">.</span><span class="n">constants</span><span class="p">.</span><span class="n">insert</span><span class="p">({</span><span class="s">&quot;G&quot;</span><span class="p">,</span> <span class="p">{</span><span class="mf">6.674e-11</span><span class="p">}});</span> <span class="p">}</span>   <span class="c1">// Gravitación universal</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[21]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>@0x7fd5f9184300</pre>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -12675,7 +12655,434 @@ a.anchor-link {
 </div>
 </div>
 
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Las-subclases-de-la-clase-S&#237;mbolo">Las subclases de la clase S&#237;mbolo<a class="anchor-link" href="#Las-subclases-de-la-clase-S&#237;mbolo">&#182;</a></h1>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Como ya se vio, las expresiones pueden estar formadas por tres tipos de símbolos diferentes (sin contar los paréntesis y la coma de separación propios de la notación posfija):</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Constantes</li>
+</ul>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Funciones</li>
+</ul>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Operadores</li>
+</ul>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><em>Existe un cuarto tipo, las <strong>Variables</strong>, pero estas pertenecen al funcionamiento interno del parser y sólo existen para proporcionar la habilidad a las expresiones de funcionar como invocables. A efectos prácticos, funcionan como las constantes.</em></p>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Constantes">Constantes<a class="anchor-link" href="#Constantes">&#182;</a></h2>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Envuelven valores del tipo al que esté orientado el parser (<strong>double</strong> en el caso del parser por defecto).</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="n">calculate</span><span class="o">::</span><span class="n">Parser</span><span class="o">::</span><span class="n">Constant</span> <span class="n">c</span><span class="p">{</span><span class="mi">1</span><span class="p">};</span>
+<span class="kt">double</span><span class="p">{</span><span class="n">c</span><span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[23]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>1</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Funciones">Funciones<a class="anchor-link" href="#Funciones">&#182;</a></h2>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Son capaces de envolver cualquier tipo de invocable, siempre que todos sus argumentos (un número indefinido de ellos) y el resultado sean del tipo al que está orientado el parser:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="kt">double</span> <span class="nf">sum</span><span class="p">(</span><span class="kt">double</span> <span class="n">x</span><span class="p">,</span> <span class="kt">double</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">;</span> <span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="n">calculate</span><span class="o">::</span><span class="n">Parser</span><span class="o">::</span><span class="n">Function</span> <span class="n">f</span><span class="p">{</span><span class="n">sum</span><span class="p">};</span>
+<span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[25]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>4</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>En el caso de funtores, estos han de tener su operador llamada declarado como constante (las funciones matemáticas no tienen efectos secundarios).</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="k">class</span> <span class="nc">Plus</span> <span class="p">{</span>
+    <span class="kt">double</span> <span class="n">_x</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Plus</span><span class="p">(</span><span class="kt">double</span> <span class="n">x</span><span class="p">)</span> <span class="o">:</span> <span class="n">_x</span><span class="p">{</span><span class="n">x</span><span class="p">}</span> <span class="p">{}</span>
+    <span class="kt">double</span> <span class="k">operator</span><span class="p">()(</span><span class="kt">double</span> <span class="n">x</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">_x</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">Plus</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[27]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>4</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Dado que el número de argumentos del operador llamada de los objetos de la clase <strong>Function</strong> es indefinido, los errores en el número de ellos pasan al tiempo de ejecución:</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="k">try</span> <span class="p">{</span>
+    <span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">calculate</span><span class="o">::</span><span class="n">BaseError</span><span class="o">&amp;</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">error</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Arguments mismatch: 1 needed argument vs 2 provided
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Operadores">Operadores<a class="anchor-link" href="#Operadores">&#182;</a></h2>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Al igual que las funciones, envuelven invocables, pero además poseen dos atributos adicionales:</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Su precedencia (dada por un entero sin signo).</li>
+</ul>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Su asociatividad (por la izquierda, por la derecha o ambas).</li>
+</ul>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Por ejemplo, el operador <strong>+</strong> por defecto:</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="n">calculate</span><span class="o">::</span><span class="n">Parser</span><span class="o">::</span><span class="n">Operator</span> <span class="n">plus</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">operators</span><span class="p">[</span><span class="s">&quot;+&quot;</span><span class="p">];</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Tiene menor precedencia que el operador <strong>*</strong> por defecto:</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="kt">bool</span><span class="p">{</span><span class="n">plus</span><span class="p">.</span><span class="n">precedence</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">parser</span><span class="p">.</span><span class="n">operators</span><span class="p">[</span><span class="s">&quot;*&quot;</span><span class="p">].</span><span class="n">precedence</span><span class="p">()}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[30]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>true</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Y es asociativo por ambos lados:</p>
+<p>$(1 + 2) + 3 == 1 + (2 + 3)$</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="kt">bool</span><span class="p">{</span><span class="n">plus</span><span class="p">.</span><span class="n">associativity</span><span class="p">()</span> <span class="o">==</span> <span class="n">calculate</span><span class="o">::</span><span class="n">Parser</span><span class="o">::</span><span class="n">Associativity</span><span class="o">::</span><span class="n">FULL</span><span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[31]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>true</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div></section></section>
 </div>
 </div>
 
