@@ -12114,6 +12114,33 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>¿En realidad hace falta toda esta maquinaria para definir una función con la que extender los pársers?</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nl">foo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">exprtk</span><span class="o">::</span><span class="n">ifunction</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="p">{</span>
+   <span class="n">foo</span><span class="p">()</span> <span class="o">:</span> <span class="n">exprtk</span><span class="o">::</span><span class="n">ifunction</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="p">{}</span>
+
+   <span class="n">T</span> <span class="k">operator</span><span class="p">()(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">v1</span><span class="p">,</span> <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">v2</span><span class="p">,</span> <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">v3</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="n">T</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">v1</span> <span class="o">*</span> <span class="n">v2</span><span class="p">)</span> <span class="o">/</span> <span class="n">T</span><span class="p">(</span><span class="n">v3</span><span class="p">);</span>
+   <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+<p>Ejemplo de uso del párser <a href="https://github.com/ArashPartow/exprtk"><strong>ExprTk</strong></a>.</p>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>¿No puede existir algo...</p>
 
 </div>
@@ -12126,6 +12153,11 @@ a.anchor-link {
 <p>...así?</p>
 <div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">expr</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="s">&quot;sqrt(x^2+y^2)&quot;</span><span class="p">);</span>
 <span class="n">expr</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+
+<span class="n">parser</span><span class="p">.</span><span class="n">functions</span><span class="p">.</span><span class="n">insert</span><span class="p">({</span>
+    <span class="s">&quot;f&quot;</span><span class="p">,</span>
+    <span class="p">[](</span><span class="kt">double</span> <span class="n">v1</span><span class="p">,</span> <span class="kt">double</span> <span class="n">v2</span><span class="p">,</span> <span class="kt">double</span> <span class="n">v3</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">v1</span> <span class="o">*</span> <span class="n">v2</span><span class="p">)</span> <span class="o">/</span> <span class="n">v3</span>  <span class="p">}</span>
+<span class="p">});</span>
 </pre></div>
 
 </div>
@@ -12200,6 +12232,58 @@ a.anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
 <li><strong>C++</strong> moderno (estándar <strong>C++14</strong>).</li>
+</ul>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="&#191;De-qu&#233;-elementos-se-compone-Calculate?">&#191;De qu&#233; elementos se compone Calculate?<a class="anchor-link" href="#&#191;De-qu&#233;-elementos-se-compone-Calculate?">&#182;</a></h2>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Clase <strong>Parser</strong>.</li>
+</ul>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Clase <strong>Lexer</strong>.</li>
+</ul>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Subclases de <strong>Symbol</strong>: <strong>Constant</strong>, <strong>Function</strong>, <strong>Operator</strong>.</li>
+</ul>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Clase <strong>Expression</strong>.</li>
 </ul>
 
 </div>
@@ -12887,7 +12971,7 @@ a.anchor-link {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>@0x7fc8b8410e70</pre>
+<pre>@0x7fbeae5e4a30</pre>
 </div>
 
 </div>
