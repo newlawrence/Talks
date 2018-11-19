@@ -77,7 +77,7 @@ FooConcept const FooDispatcherPMR{
         [[maybe_unused]] auto allocator = detail::rebind<T>(alloc);
         auto& storage = *detail::remote_cast<T**, U*>(self);
         auto& data = *detail::remote_cast<T**, U*>(other);
-        std::swap(storage, data);
+        storage = data;
         data = nullptr;
     },
     [](void* self, void* alloc) {
