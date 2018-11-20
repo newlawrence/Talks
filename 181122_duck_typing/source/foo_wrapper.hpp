@@ -21,10 +21,10 @@ private:
     allocator_type allocator_;
 
     FooConcept const* dispatcher_;
-    union Data {
+    union Storage {
         std::aligned_storage_t<BUFFER_SIZE> local;
         void* remote;
-    } self_;
+    } storage_;
 
 public:
     template<
@@ -44,13 +44,13 @@ public:
             sizeof(T) <= BUFFER_SIZE &&
             std::is_nothrow_move_constructible_v<T>
         ) {
-            dispatcher_ = &FooDispatcherSBO<T, Data>;
-            storage = reinterpret_cast<T*>(&self_.local);
+            dispatcher_ = &FooDispatcherSBO<T, Storage>;
+            storage = reinterpret_cast<T*>(&storage_.local);
         }
         else {
-            dispatcher_ = &FooDispatcherPMR<T, Data>;
-            self_.remote = allocator.allocate(1);
-            storage = reinterpret_cast<T*>(self_.remote);
+            dispatcher_ = &FooDispatcherPMR<T, Storage>;
+            storage_.remote = allocator.allocate(1);
+            storage = reinterpret_cast<T*>(storage_.remote);
         }
         allocator.construct(storage, std::forward<T>(obj));
     }
