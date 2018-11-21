@@ -11970,7 +11970,29 @@ a.anchor-link {
 <h1 id="Polimorfismo">Polimorfismo<a class="anchor-link" href="#Polimorfismo">&#182;</a></h1>
 </div>
 </div>
-</div></section></section><section><section>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Polimorfismo dinámico</li>
+</ul>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Polimorfismo estático</li>
+</ul>
+
+</div>
+</div>
+</div></div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -12134,7 +12156,7 @@ I&#39;m a Foo2 instance
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Las plantillas de toda la vida.</p>
+<p>Es decir, las plantillas.</p>
 
 </div>
 </div>
@@ -12441,6 +12463,397 @@ I&#39;m a Foo3 instance
 <blockquote><p>When I see a bird that walks like a duck and swims like a duck and quacks like a duck, I call that bird a duck.</p>
 <p><cite><b>James Whitcomb Riley</b></cite></p>
 </blockquote>
+
+</div>
+</div>
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Algo-de-control-sobre-la-memoria-din&#225;mica">Algo de control sobre la memoria din&#225;mica<a class="anchor-link" href="#Algo-de-control-sobre-la-memoria-din&#225;mica">&#182;</a></h1>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong><em>Optimización del objeto pequeño</em></strong></p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong><em>Recursos de memoria polimórficos</em></strong></p>
+
+</div>
+</div>
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Tablas-de-m&#233;todos-virtuales">Tablas de m&#233;todos virtuales<a class="anchor-link" href="#Tablas-de-m&#233;todos-virtuales">&#182;</a></h2>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Los mecanismos de implementación de la optimización del objeto pequeño y reserva de memoria de objetos con tipos borrados requieren de castings intensivos.</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Las clases con métodos virtuales no poseen una disposición estándar (<strong>standard layout</strong>). Los castings directos de clase base a una localización de memoria donde se ha almacenado una clase derivada conducen a <strong>comportamiento indefinido</strong>.</p>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>De la herencia a las tablas de métodos... ¿cómo cambia el borrado de tipos?</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">FooWrapper</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">using</span> <span class="n">allocator_type</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">pmr</span><span class="o">::</span><span class="n">polymorphic_allocator</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">byte</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="k">static</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="k">constexpr</span> <span class="n">BUFFER_SIZE</span> <span class="o">=</span> <span class="mi">16</span><span class="p">;</span>
+
+    <span class="n">allocator_type</span> <span class="n">allocator_</span><span class="p">;</span>
+
+    <span class="n">FooConcept</span> <span class="k">const</span><span class="o">*</span> <span class="n">dispatcher_</span><span class="p">;</span>
+    <span class="k">union</span> <span class="n">Storage</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">aligned_storage_t</span><span class="o">&lt;</span><span class="n">BUFFER_SIZE</span><span class="o">&gt;</span> <span class="n">local</span><span class="p">;</span>
+        <span class="kt">void</span><span class="o">*</span> <span class="n">remote</span><span class="p">;</span>
+    <span class="p">}</span> <span class="n">storage_</span><span class="p">;</span>
+
+    <span class="c1">// ...</span>
+<span class="p">};</span>
+</pre></div>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conceptos-como-tablas-virtuales-de-punteros">Conceptos como tablas virtuales de punteros<a class="anchor-link" href="#Conceptos-como-tablas-virtuales-de-punteros">&#182;</a></h2>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">FooConcept</span> <span class="p">{</span>
+    <span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="n">bar</span><span class="p">)(</span><span class="kt">void</span><span class="o">*</span> <span class="n">self</span><span class="p">);</span>
+    <span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="n">destroy</span><span class="p">)(</span><span class="kt">void</span><span class="o">*</span> <span class="n">self</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">alloc</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Implementando la tabla de punteros para los objetos pequeños...</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">U</span><span class="o">&gt;</span>
+<span class="n">FooConcept</span> <span class="k">const</span> <span class="n">FooDispatcherSBO</span><span class="p">{</span>
+    <span class="p">[](</span><span class="kt">void</span><span class="o">*</span> <span class="n">self</span><span class="p">)</span> <span class="p">{</span>         <span class="c1">// bar</span>
+        <span class="k">auto</span> <span class="n">storage</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">U</span><span class="o">&gt;</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">local</span><span class="p">);</span>
+        <span class="n">storage</span><span class="o">-&gt;</span><span class="n">bar</span><span class="p">();</span>
+    <span class="p">},</span>
+    <span class="p">[](</span><span class="kt">void</span><span class="o">*</span> <span class="n">self</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// destroy</span>
+        <span class="k">auto</span> <span class="n">storage</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">U</span><span class="o">&gt;</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">local</span><span class="p">);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">destroy_at</span><span class="p">(</span><span class="n">storage</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Implementando la tabla de punteros para los objetos utilizando memoria dinámica...</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">U</span><span class="o">&gt;</span>
+<span class="n">FooConcept</span> <span class="k">const</span> <span class="n">FooDispatcherPMR</span><span class="p">{</span>
+    <span class="p">[](</span><span class="kt">void</span><span class="o">*</span> <span class="n">self</span><span class="p">)</span> <span class="p">{</span>               <span class="c1">// bar</span>
+        <span class="k">auto</span> <span class="n">storage</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">U</span><span class="o">&gt;</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">remote</span><span class="p">);</span>
+        <span class="n">remote</span><span class="o">-&gt;</span><span class="n">bar</span><span class="p">();</span>
+    <span class="p">},</span>
+    <span class="p">[](</span><span class="kt">void</span><span class="o">*</span> <span class="n">self</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">alloc</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// destroy</span>
+        <span class="k">auto</span> <span class="n">allocator</span> <span class="o">=</span> <span class="n">detail</span><span class="o">::</span><span class="n">rebind_function</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">alloc</span><span class="p">);</span>
+        <span class="k">auto</span> <span class="n">storage</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">U</span><span class="o">&gt;</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">remote</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">storage</span><span class="p">)</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">destroy_at</span><span class="p">(</span><span class="n">storage</span><span class="p">);</span>
+        <span class="n">allocator</span><span class="p">.</span><span class="n">deallocate</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+</div>
+</div>
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Borrado-de-tipos">Borrado de tipos<a class="anchor-link" href="#Borrado-de-tipos">&#182;</a></h2>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">FooWrapper</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+    <span class="k">explicit</span> <span class="n">FooWrapper</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">obj</span><span class="p">,</span> <span class="n">allocator_type</span> <span class="n">alloc</span><span class="o">=</span><span class="p">{})</span>
+        <span class="o">:</span> <span class="n">allocator_</span><span class="p">{</span> <span class="n">alloc</span> <span class="p">}</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">pmr</span><span class="o">::</span><span class="n">polymorphic_allocator</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">allocator</span><span class="p">{</span> <span class="n">alloc</span> <span class="p">};</span>
+        <span class="n">T</span><span class="o">*</span> <span class="n">storage</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="nf">constexpr</span> <span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">BUFFER_SIZE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">dispatcher_</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">FooDispatcherSBO</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">Storage</span><span class="o">&gt;</span><span class="p">;</span>
+            <span class="n">storage</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">storage_</span><span class="p">.</span><span class="n">local</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="n">dispatcher_</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">FooDispatcherPMR</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">Storage</span><span class="o">&gt;</span><span class="p">;</span>
+            <span class="n">storage_</span><span class="p">.</span><span class="n">remote</span> <span class="o">=</span> <span class="n">allocator</span><span class="p">.</span><span class="n">allocate</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+            <span class="n">storage</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">storage_</span><span class="p">.</span><span class="n">remote</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">allocator</span><span class="p">.</span><span class="n">construct</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">obj</span><span class="p">));</span>
+    <span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>El desctructor y el método <code>bar</code> son despachados a través de la tabla de punteros:</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="n">FooWrapper</span><span class="o">::~</span><span class="n">FooWrapper</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">dispatcher_</span><span class="o">-&gt;</span><span class="n">destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">storage_</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">allocator_</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">FooWrapper</span><span class="o">::</span><span class="n">bar</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="n">dispatcher_</span><span class="o">-&gt;</span><span class="n">bar</span><span class="p">(</span><span class="o">&amp;</span><span class="k">const_cast</span><span class="o">&lt;</span><span class="n">Storage</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">storage_</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Utilizando-un-bloque-de-memoria-local">Utilizando un bloque de memoria local<a class="anchor-link" href="#Utilizando-un-bloque-de-memoria-local">&#182;</a></h2>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Definiendo un objeto pequeño:</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SmallFoo</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">bar</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;I am a small foo!&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Definiendo un objeto que requiera de memoria dinámica:</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BigFoo</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">str_</span><span class="p">[</span><span class="mi">24</span><span class="p">];</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">BigFoo</span><span class="p">()</span> <span class="k">noexcept</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">strcpy</span><span class="p">(</span><span class="n">str_</span><span class="p">,</span> <span class="s">&quot;I am a big foo!&quot;</span><span class="p">);</span> <span class="p">}</span>
+    <span class="n">BigFoo</span><span class="p">(</span><span class="n">BigFoo</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">:</span> <span class="n">BigFoo</span><span class="p">{}</span> <span class="p">{}</span>
+    <span class="n">BigFoo</span><span class="p">(</span><span class="n">BigFoo</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">:</span> <span class="n">BigFoo</span><span class="p">{}</span> <span class="p">{}</span>
+
+    <span class="kt">void</span> <span class="n">bar</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">str_</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Ejemplo envolviendo ambos objetos en un vector que se aprovecha de un bloque de memoria local:</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">byte</span><span class="p">,</span> <span class="mi">256</span><span class="o">&gt;</span> <span class="n">buffer</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">pmr</span><span class="o">::</span><span class="n">monotonic_buffer_resource</span> <span class="n">pool</span><span class="p">{</span> <span class="n">buffer</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span> <span class="n">buffer</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">};</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">pmr</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">foo</span><span class="o">::</span><span class="n">FooWrapper</span><span class="o">&gt;</span> <span class="n">foos</span><span class="p">{</span> <span class="o">&amp;</span><span class="n">pool</span> <span class="p">};</span>
+<span class="n">foos</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">SmallFoo</span><span class="p">());</span>
+<span class="n">foos</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">BigFoo</span><span class="p">());</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="k">const</span><span class="o">&amp;</span> <span class="nl">foo</span> <span class="p">:</span> <span class="n">foos</span><span class="p">)</span>
+    <span class="n">foo</span><span class="p">.</span><span class="n">bar</span><span class="p">();</span>
+</pre></div>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Demostrado está, en <strong>C++</strong> es posible un polimorfismo...</p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Con semántica por valor.</li>
+</ul>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Sin necesidad de aportar código adicional.</li>
+</ul>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Con control sobre la gestión de la memoria.</li>
+</ul>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="...-por-eso-nos-gusta-C++!">... por eso nos gusta C++!<a class="anchor-link" href="#...-por-eso-nos-gusta-C++!">&#182;</a></h3>
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="C&#243;digo-fuente">C&#243;digo fuente<a class="anchor-link" href="#C&#243;digo-fuente">&#182;</a></h1>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>El ejemplo correcto y completo de borrado de tipos aquí presentado, utilizando optimización del objeto pequeño y recursos de memoria polimórficos (incluyendo los constructores de copia y movimiento, así como los operadores de asignación), puede encontrarse <a href="https://github.com/newlawrence/Talks/tree/master/181122_duck_typing/source">aquí</a>.</p>
 
 </div>
 </div>
