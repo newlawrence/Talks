@@ -31,7 +31,7 @@ decltype(auto) remote_cast(void* self) {
 
 
 struct FooConcept {
-    void(*foo)(void* self);
+    void(*bar)(void* self);
 
     void(*copy)(void* other, void* self, void* alloc);
     void(*move)(void* other, void* self, void* alloc);
@@ -41,7 +41,7 @@ struct FooConcept {
 
 template<typename T, typename U>
 FooConcept const FooDispatcherSBO{
-    [](void* self) { detail::local_cast<T*, U*>(self)->foo(); },
+    [](void* self) { detail::local_cast<T*, U*>(self)->bar(); },
 
     [](void* other, void* self, void* alloc) {
         auto allocator = detail::rebind<T>(alloc);
@@ -64,7 +64,7 @@ FooConcept const FooDispatcherSBO{
 
 template<typename T, typename U>
 FooConcept const FooDispatcherPMR{
-    [](void* self) { detail::remote_cast<T*, U*>(self)->foo(); },
+    [](void* self) { detail::remote_cast<T*, U*>(self)->bar(); },
 
     [](void* other, void* self, void* alloc) {
         auto allocator = detail::rebind<T>(alloc);

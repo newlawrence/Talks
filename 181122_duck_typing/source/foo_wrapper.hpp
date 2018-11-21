@@ -66,7 +66,7 @@ public:
     FooWrapper& operator=(FooWrapper const& other);
     FooWrapper& operator=(FooWrapper&& other);
 
-    void foo() const;
+    void bar() const;
 };
 
 }

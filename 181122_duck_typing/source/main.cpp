@@ -8,7 +8,7 @@
 
 class SmallFoo {
 public:
-    void foo() const { std::cout << "I am a small foo!" << std::endl; }
+    void bar() const { std::cout << "I am a small foo!" << std::endl; }
 };
 
 class BigFoo {
@@ -19,7 +19,7 @@ public:
     BigFoo(BigFoo const& other) noexcept : BigFoo{} {}
     BigFoo(BigFoo&& other) noexcept : BigFoo{} {}
 
-    void foo() const { std::cout << str_ << std::endl; }
+    void bar() const { std::cout << str_ << std::endl; }
 };
 
 
@@ -32,6 +32,6 @@ int main() {
     foos.emplace_back(BigFoo());
 
     for (auto const& foo : foos)
-        foo.foo();
+        foo.bar();
     return 0;
 }

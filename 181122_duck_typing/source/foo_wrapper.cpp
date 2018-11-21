@@ -57,6 +57,6 @@ FooWrapper& FooWrapper::operator=(FooWrapper&& other) {
     return *this;
 }
 
-void FooWrapper::foo() const {
-    dispatcher_->foo(&const_cast<Storage&>(storage_));
+void FooWrapper::bar() const {
+    dispatcher_->bar(&const_cast<Storage&>(storage_));
 }
