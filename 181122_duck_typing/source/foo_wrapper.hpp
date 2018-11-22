@@ -32,7 +32,7 @@ private:
 public:
     template<
         typename T,
-        typename = std::enable_if_t<  // Avoid overload on copies and moves
+        typename = std::enable_if_t<  // avoid overload on copies and moves
             !std::is_same_v<std::decay_t<T>, FooWrapper> &&
             !std::is_base_of_v<FooWrapper, std::decay_t<T>>
         >
@@ -43,14 +43,14 @@ public:
         std::pmr::polymorphic_allocator<T> allocator{ alloc };
         T* storage;
 
-        if constexpr (  // Use small buffer optimization
+        if constexpr (  // use small buffer optimization
             sizeof(T) <= BUFFER_SIZE &&
-            std::is_nothrow_move_constructible_v<T>  // Guarantees noexcept move
+            std::is_nothrow_move_constructible_v<T>  // guarantees noexcept move
         ) {
             dispatcher_ = &FooDispatcherSBO<T, Storage>;
             storage = reinterpret_cast<T*>(&storage_.local);
         }
-        else {          // Use polymorphic allocators
+        else {          // use polymorphic allocators
             dispatcher_ = &FooDispatcherPMR<T, Storage>;
             storage_.remote = allocator.allocate(1);
             storage = reinterpret_cast<T*>(storage_.remote);

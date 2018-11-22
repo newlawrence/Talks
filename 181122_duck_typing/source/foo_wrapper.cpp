@@ -22,7 +22,7 @@ FooWrapper::FooWrapper(FooWrapper&& other, allocator_type alloc)
     : allocator_{ alloc }
     , dispatcher_{ other.dispatcher_ }
 {
-    if (allocator_ == other.allocator_)
+    if (dispatcher_->small || allocator_ == other.allocator_)
         other.dispatcher_->move(&other.storage_, &storage_, &allocator_);
     else  // cannot free memory later if allocators are incompatible
         other.dispatcher_->copy(&other.storage_, &storage_, &allocator_);
@@ -50,7 +50,7 @@ FooWrapper& FooWrapper::operator=(FooWrapper const& other) {
 FooWrapper& FooWrapper::operator=(FooWrapper&& other) {
     dispatcher_->destroy(&storage_, &allocator_);
     dispatcher_ = other.dispatcher_;  // never forget reassigning dispatchers
-    if (allocator_ == other.allocator_)
+    if (dispatcher_->small || allocator_ == other.allocator_)
         other.dispatcher_->move(&other.storage_, &storage_, &allocator_);
     else  // cannot free memory later if allocators are incompatible
         other.dispatcher_->copy(&other.storage_, &storage_, &allocator_);

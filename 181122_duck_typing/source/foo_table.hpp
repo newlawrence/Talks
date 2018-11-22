@@ -39,11 +39,11 @@ decltype(auto) remote_cast(void* self) {  // remote is a pointer
 // Foo dispatcher interface
 
 struct FooConcept {
-    void(*bar)(void* self);
-
     void(*copy)(void* other, void* self, void* alloc);
     void(*move)(void* other, void* self, void* alloc);
     void(*destroy)(void* self, void* alloc);
+    void(*bar)(void* self);
+    bool small;
 };
 
 
@@ -52,8 +52,6 @@ struct FooConcept {
 
 template<typename T, typename U>    // U == union FooWrapper::Storage;
 FooConcept const FooDispatcherSBO{
-    [](void* self) { detail::local_cast<T*, U*>(self)->bar(); },  // bar
-
     [](void* other, void* self, void* alloc) {  // copy
         auto allocator = detail::rebind<T>(alloc);
         auto storage = detail::local_cast<T*, U*>(self);
@@ -70,7 +68,9 @@ FooConcept const FooDispatcherSBO{
         [[maybe_unused]] auto allocator = detail::rebind<T>(alloc);
         auto storage = detail::local_cast<T*, U*>(self);
         std::destroy_at(storage);  // or 'allocator.destroy(storage);'
-    }
+    },
+    [](void* self) { detail::local_cast<T*, U*>(self)->bar(); },  // bar
+    true  // small
 };
 
 // This dispatcher makes use of polymorphic allocators,  moves shall be
@@ -78,8 +78,6 @@ FooConcept const FooDispatcherSBO{
 
 template<typename T, typename U>  // U == union FooWrapper::Storage;
 FooConcept const FooDispatcherPMR{
-    [](void* self) { detail::remote_cast<T*, U*>(self)->bar(); },  // bar
-
     [](void* other, void* self, void* alloc) {  // copy
         auto allocator = detail::rebind<T>(alloc);
         auto& storage = *detail::remote_cast<T**, U*>(self);
@@ -92,15 +90,17 @@ FooConcept const FooDispatcherPMR{
         auto& storage = *detail::remote_cast<T**, U*>(self);
         auto& data = *detail::remote_cast<T**, U*>(other);
         storage = data;
-        data = nullptr;  // Ensures safe destruction on moved from objects
+        data = nullptr;  // ensures safe destruction on moved from objects
     },
     [](void* self, void* alloc) {               // destroy
         auto allocator = detail::rebind<T>(alloc);
         auto storage = detail::remote_cast<T*, U*>(self);
-        if (storage)  // Avoid calling destructor on a null location
+        if (storage)  // avoid calling destructor on a null location
             std::destroy_at(storage);  // or 'allocator.destroy(storage);'
         allocator.deallocate(storage, 1);
-    }
+    },
+    [](void* self) { detail::remote_cast<T*, U*>(self)->bar(); },  // bar
+    false  // small
 };
 
 }
