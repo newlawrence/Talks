@@ -12705,12 +12705,12 @@ I&#39;m a Foo3 instance
 
 </div>
 </div>
-</div></div></section><section>
+</div></div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Utilizando-un-bloque-de-memoria-local">Utilizando un bloque de memoria local<a class="anchor-link" href="#Utilizando-un-bloque-de-memoria-local">&#182;</a></h2>
+<h2 id="Ejemplo-final:-utilizando-un-bloque-de-memoria-local">Ejemplo final: utilizando un bloque de memoria local<a class="anchor-link" href="#Ejemplo-final:-utilizando-un-bloque-de-memoria-local">&#182;</a></h2>
 </div>
 </div>
 </div><div class="fragment">
@@ -12718,7 +12718,7 @@ I&#39;m a Foo3 instance
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Definiendo un objeto pequeño:</p>
+<p>Sea un objeto pequeño:</p>
 
 </div>
 </div>
@@ -12740,7 +12740,7 @@ I&#39;m a Foo3 instance
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Definiendo un objeto que requiera de memoria dinámica:</p>
+<p>Sea un objeto que requiera de memoria dinámica:</p>
 
 </div>
 </div>
@@ -12781,6 +12781,7 @@ I&#39;m a Foo3 instance
 <span class="n">std</span><span class="o">::</span><span class="n">pmr</span><span class="o">::</span><span class="n">monotonic_buffer_resource</span> <span class="n">pool</span><span class="p">{</span> <span class="n">buffer</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span> <span class="n">buffer</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">};</span>
 
 <span class="n">std</span><span class="o">::</span><span class="n">pmr</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">foo</span><span class="o">::</span><span class="n">FooWrapper</span><span class="o">&gt;</span> <span class="n">foos</span><span class="p">{</span> <span class="o">&amp;</span><span class="n">pool</span> <span class="p">};</span>
+<span class="n">foos</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>  <span class="c1">// No move-constructor defined yet</span>
 <span class="n">foos</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">SmallFoo</span><span class="p">());</span>
 <span class="n">foos</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">BigFoo</span><span class="p">());</span>
 
