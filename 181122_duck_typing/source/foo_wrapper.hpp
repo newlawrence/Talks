@@ -4,9 +4,7 @@
 #include "foo_table.hpp"
 
 #include <type_traits>
-
 #include <memory_resource>
-#include <memory>
 
 
 namespace foo {
@@ -47,8 +45,17 @@ public:
             sizeof(T) <= BUFFER_SIZE &&
             std::is_nothrow_move_constructible_v<T>  // guarantees noexcept move
         ) {
-            dispatcher_ = &FooDispatcherSBO<T, Storage>;
-            storage = reinterpret_cast<T*>(&storage_.local);
+            void* buffer = &storage_.local;
+            auto size = BUFFER_SIZE;
+            if (std::align(alignof(T), sizeof(T), buffer, size)) {
+                dispatcher_ = &FooDispatcherSBO<T, Storage>;
+                storage = reinterpret_cast<T*>(buffer);
+            }
+            else {  // alignment constraints make impossible the use of SBO
+                dispatcher_ = &FooDispatcherPMR<T, Storage>;
+                storage_.remote = allocator.allocate(1);
+                storage = reinterpret_cast<T*>(storage_.remote);                
+            }
         }
         else {          // use polymorphic allocators
             dispatcher_ = &FooDispatcherPMR<T, Storage>;

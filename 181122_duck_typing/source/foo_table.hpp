@@ -1,6 +1,8 @@
 #ifndef FOO_TABLE_HPP
 #define FOO_TABLE_HPP
 
+#include <memory>
+
 
 namespace foo {
 
@@ -20,17 +22,20 @@ decltype(auto) rebind(void* alloc) {
 // types. Their purpose is to look similar to regular castings from pointer type
 // U to pointer type T. Use: 'local_cast<T*, U*>(some_void_pointer)'
 
-template<typename T, typename U>
+template<typename P, typename Q>
 decltype(auto) local_cast(void* self) {  // local is a value
-    return reinterpret_cast<T>(&static_cast<U>(self)->local);
+    using T = std::remove_pointer_t<P>;
+    void* buffer = &static_cast<Q>(self)->local;
+    auto size = sizeof(static_cast<Q>(self)->local);
+    return reinterpret_cast<P>(std::align(alignof(T), sizeof(T), buffer, size));
 }
 
-template<typename T, typename U>
+template<typename P, typename Q>
 decltype(auto) remote_cast(void* self) {  // remote is a pointer
-    if constexpr (std::is_pointer_v<std::remove_pointer_t<T>>)
-        return reinterpret_cast<T>(&static_cast<U>(self)->remote);
+    if constexpr (std::is_pointer_v<std::remove_pointer_t<P>>)
+        return reinterpret_cast<P>(&static_cast<Q>(self)->remote);
     else
-        return reinterpret_cast<T>(static_cast<U>(self)->remote);
+        return reinterpret_cast<P>(static_cast<Q>(self)->remote);
 }
 
 }
