@@ -6,12 +6,9 @@ using namespace foo;
 FooWrapper::FooWrapper(FooWrapper const& other, allocator_type alloc)
     : allocator_{ alloc }
     , dispatcher_{ other.dispatcher_ }
+    , self_{ &buffer_ }
 {
-    other.dispatcher_->copy(
-        &const_cast<Storage&>(other.storage_),
-        &storage_,
-        &allocator_
-    );
+    dispatcher_->copy(other.self_, self_, allocator_);
 }
 
 FooWrapper::FooWrapper(FooWrapper const& other)
@@ -21,42 +18,45 @@ FooWrapper::FooWrapper(FooWrapper const& other)
 FooWrapper::FooWrapper(FooWrapper&& other, allocator_type alloc)
     : allocator_{ alloc }
     , dispatcher_{ other.dispatcher_ }
+    , self_{ &buffer_ }
 {
-    if (dispatcher_->small || allocator_ == other.allocator_)
-        other.dispatcher_->move(&other.storage_, &storage_, &allocator_);
-    else  // cannot free memory later if allocators are incompatible
-        other.dispatcher_->copy(&other.storage_, &storage_, &allocator_);
+    if (allocator_ == other.allocator_)
+        dispatcher_->move(other.self_, self_, allocator_);
+    else
+        dispatcher_->transfer(other.self_, self_, allocator_);
 }
 
-FooWrapper::FooWrapper(FooWrapper&& other) noexcept  // guaranteed
+FooWrapper::FooWrapper(FooWrapper&& other) noexcept
     : FooWrapper{ std::move(other), other.allocator_ }
-{}  // if SBO mandated noexcept move (otherwise PMR), if PMR swap of pointers
+{}
 
 FooWrapper::~FooWrapper() {
-    dispatcher_->destroy(&storage_, &allocator_);
+    dispatcher_->destroy(self_, allocator_);
 }
 
 FooWrapper& FooWrapper::operator=(FooWrapper const& other) {
-    dispatcher_->destroy(&storage_, &allocator_);
-    dispatcher_ = other.dispatcher_;  // never forget reassigning dispatchers
-    other.dispatcher_->copy(
-        &const_cast<Storage&>(other.storage_),
-        &storage_,
-        &allocator_
-    );
+    dispatcher_->destroy(&self_, allocator_);
+    dispatcher_ = other.dispatcher_;
+    self_ = &buffer_;
+    dispatcher_->copy(other.self_, self_, allocator_);
     return *this;
 }
 
 FooWrapper& FooWrapper::operator=(FooWrapper&& other) {
-    dispatcher_->destroy(&storage_, &allocator_);
-    dispatcher_ = other.dispatcher_;  // never forget reassigning dispatchers
-    if (dispatcher_->small || allocator_ == other.allocator_)
-        other.dispatcher_->move(&other.storage_, &storage_, &allocator_);
-    else  // cannot free memory later if allocators are incompatible
-        other.dispatcher_->copy(&other.storage_, &storage_, &allocator_);
+    dispatcher_->destroy(&self_, allocator_);
+    dispatcher_ = other.dispatcher_;
+    self_ = &buffer_;
+    if (allocator_ == other.allocator_)
+        dispatcher_->move(other.self_, self_, allocator_);
+    else
+        dispatcher_->transfer(other.self_, self_, allocator_);
     return *this;
 }
 
+FooWrapper::allocator_type FooWrapper::get_allocator() const {
+    return allocator_;
+}
+
 void FooWrapper::bar() const {
-    dispatcher_->bar(&const_cast<Storage&>(storage_));
+    dispatcher_->bar(self_);
 }

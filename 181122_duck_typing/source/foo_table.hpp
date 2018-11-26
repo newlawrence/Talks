@@ -1,111 +1,89 @@
 #ifndef FOO_TABLE_HPP
 #define FOO_TABLE_HPP
 
+#include <memory_resource>
 #include <memory>
 
 
 namespace foo {
 
-// Some auxiliary functions to save some boilerplate code related to castings
+using allocator_t = std::pmr::polymorphic_allocator<std::byte>;
 
-namespace detail {
-
-template<typename T>
-decltype(auto) rebind(void* alloc) {
-    return std::pmr::polymorphic_allocator<T>{
-        *static_cast<std::pmr::polymorphic_allocator<std::byte>*>(alloc)
-    };
-}
-
-
-// The following functions are for internal use and only specialized on pointer
-// types. Their purpose is to look similar to regular castings from pointer type
-// U to pointer type T. Use: 'local_cast<T*, U*>(some_void_pointer)'
-
-template<typename P, typename Q>
-decltype(auto) local_cast(void* self) {  // local is a value
-    using T = std::remove_pointer_t<P>;
-    void* buffer = &static_cast<Q>(self)->local;
-    auto size = sizeof(static_cast<Q>(self)->local);
-    return reinterpret_cast<P>(std::align(alignof(T), sizeof(T), buffer, size));
-}
-
-template<typename P, typename Q>
-decltype(auto) remote_cast(void* self) {  // remote is a pointer
-    if constexpr (std::is_pointer_v<std::remove_pointer_t<P>>)
-        return reinterpret_cast<P>(&static_cast<Q>(self)->remote);
-    else
-        return reinterpret_cast<P>(static_cast<Q>(self)->remote);
-}
-
-}
-
-
-// Foo dispatcher interface
 
 struct FooConcept {
-    void(*copy)(void* other, void* self, void* alloc);
-    void(*move)(void* other, void* self, void* alloc);
-    void(*destroy)(void* self, void* alloc);
-    void(*bar)(void* self);
-    bool small;
+    void(*copy)(void const* other, void*& self, allocator_t alloc);
+    void(*transfer)(void* other, void*& self, allocator_t alloc);
+    void(*move)(void*& other, void*& self, allocator_t alloc);
+    void(*destroy)(void* self, allocator_t alloc);
+    void(*bar)(void const* self);
 };
 
 
-// This dispatcher makes use of local storage, moves shall be performed only
-// on non-throwing objects to ensure noexcept move constructor of the wrapper
-
-template<typename T, typename U>    // U == union FooWrapper::Storage;
+template<typename T, std::size_t n>
 FooConcept const FooDispatcherSBO{
-    [](void* other, void* self, void* alloc) {  // copy
-        auto allocator = detail::rebind<T>(alloc);
-        auto storage = detail::local_cast<T*, U*>(self);
-        auto& data = *detail::local_cast<T*, U*>(other);
-        allocator.construct(storage, data);
+    [](void const* other, void*& self, allocator_t alloc) {
+        auto allocator = std::pmr::polymorphic_allocator<T>{ alloc };
+        auto size = n;
+        std::align(alignof(T), sizeof(T), self, size);
+        allocator.construct(
+            reinterpret_cast<T*>(self),
+            *reinterpret_cast<T const*>(other)
+        );
     },
-    [](void* other, void* self, void* alloc) {  // move
-        auto allocator = detail::rebind<T>(alloc);
-        auto storage = detail::local_cast<T*, U*>(self);
-        auto& data = *detail::local_cast<T*, U*>(other);
-        allocator.construct(storage, std::move(data));
+    [](void* other, void*& self, allocator_t alloc) {
+        auto allocator = std::pmr::polymorphic_allocator<T>{ alloc };
+        auto size = n;
+        std::align(alignof(T), sizeof(T), self, size);
+        allocator.construct(
+            reinterpret_cast<T*>(self),
+            std::move(*reinterpret_cast<T*>(other))
+        );
     },
-    [](void* self, void* alloc) {               // destroy
-        [[maybe_unused]] auto allocator = detail::rebind<T>(alloc);
-        auto storage = detail::local_cast<T*, U*>(self);
-        std::destroy_at(storage);  // or 'allocator.destroy(storage);'
+    [](void*& other, void*& self, allocator_t alloc) {
+        auto allocator = std::pmr::polymorphic_allocator<T>{ alloc };
+        auto size = n;
+        std::align(alignof(T), sizeof(T), self, size);
+        allocator.construct(
+            reinterpret_cast<T*>(self),
+            std::move(*reinterpret_cast<T*>(other))
+        );
     },
-    [](void* self) { detail::local_cast<T*, U*>(self)->bar(); },  // bar
-    true  // small
+    [](void* self, allocator_t alloc) {
+        auto allocator = std::pmr::polymorphic_allocator<T>{ alloc };
+        allocator.destroy(reinterpret_cast<T*>(self));
+    },
+    [](void const* self) { reinterpret_cast<T const*>(self)->bar(); }
 };
 
-// This dispatcher makes use of polymorphic allocators,  moves shall be
-// performed only when the allocators are interchangeable
-
-template<typename T, typename U>  // U == union FooWrapper::Storage;
+template<typename T>
 FooConcept const FooDispatcherPMR{
-    [](void* other, void* self, void* alloc) {  // copy
-        auto allocator = detail::rebind<T>(alloc);
-        auto& storage = *detail::remote_cast<T**, U*>(self);
-        auto& data = *detail::remote_cast<T*, U*>(other);
-        storage = allocator.allocate(1);
-        allocator.construct(storage, data);
+    [](void const* other, void*& self, allocator_t alloc) {
+        auto allocator = std::pmr::polymorphic_allocator<T>{ alloc };
+        self = allocator.allocate(1);
+        allocator.construct(
+            reinterpret_cast<T*>(self),
+            *reinterpret_cast<T const*>(other)
+        );
     },
-    [](void* other, void* self, void* alloc) {  // move
-        [[maybe_unused]] auto allocator = detail::rebind<T>(alloc);
-        auto& storage = *detail::remote_cast<T**, U*>(self);
-        auto& data = *detail::remote_cast<T**, U*>(other);
-        storage = data;
-        data = nullptr;  // ensures safe destruction on moved from objects
+    [](void* other, void*& self, allocator_t alloc) {
+        auto allocator = std::pmr::polymorphic_allocator<T>{ alloc };
+        self = allocator.allocate(1);
+        allocator.construct(
+            reinterpret_cast<T*>(self),
+            std::move(*reinterpret_cast<T*>(other))
+        );
     },
-    [](void* self, void* alloc) {               // destroy
-        auto allocator = detail::rebind<T>(alloc);
-        auto storage = detail::remote_cast<T*, U*>(self);
-        if (storage)  // avoid calling destructor on a null location
-            std::destroy_at(storage);  // or 'allocator.destroy(storage);'
-        allocator.deallocate(storage, 1);
+    [](void*& other, void*& self, [[maybe_unused]] allocator_t alloc) {
+        self = other;
+        other = nullptr;
     },
-    [](void* self) { detail::remote_cast<T*, U*>(self)->bar(); },  // bar
-    false  // small
+    [](void* self, allocator_t alloc) {
+        auto allocator = std::pmr::polymorphic_allocator<T>{ alloc };
+        if (self)
+            allocator.destroy(reinterpret_cast<T*>(self));
+        allocator.deallocate(reinterpret_cast<T*>(self), 1);
+    },
+    [](void const* self) { reinterpret_cast<T const*>(self)->bar(); }
 };
 
 }
