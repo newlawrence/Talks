@@ -23,30 +23,24 @@ template<typename T, std::size_t n>
 FooConcept const FooDispatcherSBO{
     [](void const* other, void*& self, allocator_t alloc) {
         auto allocator = std::pmr::polymorphic_allocator<T>{ alloc };
+        auto const& data = *reinterpret_cast<T const*>(other);
         auto size = n;
         std::align(alignof(T), sizeof(T), self, size);
-        allocator.construct(
-            reinterpret_cast<T*>(self),
-            *reinterpret_cast<T const*>(other)
-        );
+        allocator.construct(reinterpret_cast<T*>(self), data);
     },
     [](void* other, void*& self, allocator_t alloc) {
         auto allocator = std::pmr::polymorphic_allocator<T>{ alloc };
+        auto& data = *reinterpret_cast<T*>(other);
         auto size = n;
         std::align(alignof(T), sizeof(T), self, size);
-        allocator.construct(
-            reinterpret_cast<T*>(self),
-            std::move(*reinterpret_cast<T*>(other))
-        );
+        allocator.construct(reinterpret_cast<T*>(self), std::move(data));
     },
     [](void*& other, void*& self, allocator_t alloc) {
         auto allocator = std::pmr::polymorphic_allocator<T>{ alloc };
+        auto& data = *reinterpret_cast<T*>(other);
         auto size = n;
         std::align(alignof(T), sizeof(T), self, size);
-        allocator.construct(
-            reinterpret_cast<T*>(self),
-            std::move(*reinterpret_cast<T*>(other))
-        );
+        allocator.construct(reinterpret_cast<T*>(self), std::move(data));
     },
     [](void* self, allocator_t alloc) {
         auto allocator = std::pmr::polymorphic_allocator<T>{ alloc };
@@ -59,19 +53,15 @@ template<typename T>
 FooConcept const FooDispatcherPMR{
     [](void const* other, void*& self, allocator_t alloc) {
         auto allocator = std::pmr::polymorphic_allocator<T>{ alloc };
+        auto const& data = *reinterpret_cast<T const*>(other);
         self = allocator.allocate(1);
-        allocator.construct(
-            reinterpret_cast<T*>(self),
-            *reinterpret_cast<T const*>(other)
-        );
+        allocator.construct(reinterpret_cast<T*>(self), data);
     },
     [](void* other, void*& self, allocator_t alloc) {
         auto allocator = std::pmr::polymorphic_allocator<T>{ alloc };
+        auto& data = *reinterpret_cast<T*>(other);
         self = allocator.allocate(1);
-        allocator.construct(
-            reinterpret_cast<T*>(self),
-            std::move(*reinterpret_cast<T*>(other))
-        );
+        allocator.construct(reinterpret_cast<T*>(self), std::move(data));
     },
     [](void*& other, void*& self, [[maybe_unused]] allocator_t alloc) {
         self = other;

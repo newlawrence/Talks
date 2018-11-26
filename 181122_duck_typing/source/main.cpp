@@ -1,7 +1,8 @@
 #include "foo_wrapper.hpp"
 
-#include <iostream>
+#include <vector>
 #include <array>
+#include <iostream>
 
 #include <cstring>
 
@@ -16,8 +17,8 @@ class BigFoo {
 
 public:
     BigFoo() noexcept { std::strcpy(str_, "I am a big foo!"); }
-    BigFoo(BigFoo const& other) noexcept : BigFoo{} {}
-    BigFoo(BigFoo&& other) noexcept : BigFoo{} {}
+    BigFoo(BigFoo const&) noexcept : BigFoo{} {}
+    BigFoo(BigFoo&&) noexcept : BigFoo{} {}
 
     void bar() const { std::cout << str_ << std::endl; }
 };
