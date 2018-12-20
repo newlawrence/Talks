@@ -20,10 +20,8 @@ FooWrapper::FooWrapper(FooWrapper&& other, allocator_type alloc)
     , dispatcher_{ other.dispatcher_ }
     , self_{ &buffer_ }
 {
-    if (allocator_ == other.allocator_)
-        dispatcher_->move(other.self_, self_, allocator_);
-    else
-        dispatcher_->transfer(other.self_, self_, allocator_);
+    auto swappable = allocator_ == other.allocator_;
+    dispatcher_->move(other.self_, self_, allocator_, swappable);
 }
 
 FooWrapper::FooWrapper(FooWrapper&& other) noexcept
@@ -38,6 +36,7 @@ FooWrapper& FooWrapper::operator=(FooWrapper const& other) {
     dispatcher_->destroy(&self_, allocator_);
     dispatcher_ = other.dispatcher_;
     self_ = &buffer_;
+
     dispatcher_->copy(other.self_, self_, allocator_);
     return *this;
 }
@@ -46,10 +45,9 @@ FooWrapper& FooWrapper::operator=(FooWrapper&& other) {
     dispatcher_->destroy(&self_, allocator_);
     dispatcher_ = other.dispatcher_;
     self_ = &buffer_;
-    if (allocator_ == other.allocator_)
-        dispatcher_->move(other.self_, self_, allocator_);
-    else
-        dispatcher_->transfer(other.self_, self_, allocator_);
+
+    auto swappable = allocator_ == other.allocator_;
+    dispatcher_->move(other.self_, self_, allocator_, swappable);
     return *this;
 }
 
