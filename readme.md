@@ -2,6 +2,8 @@
 
 There your are, this is just a minimal home for all my talks' slides and files.
 
+Follow [this link](https://newlawrence.github.io/Talks/) to properly render **html** based presentations.
+
 ### Archive
 
 - **2018/07/26** - [Calculate](180726_calculate)
